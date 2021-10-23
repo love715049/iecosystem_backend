@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TestMail;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AuthenticationController extends Controller
 {
@@ -14,9 +18,13 @@ class AuthenticationController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|unique:users,email|confirmed',
+            'account' => 'required|string|unique:users,account',
+            'password' => 'required|string|min:6|confirmed',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6'
+            'gender' => ['required', 'string', Rule::in(['male', 'female'])],
+            'birthday' => ['required', 'date'],
+            'city' => ['required', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -28,8 +36,14 @@ class AuthenticationController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'password' => Hash::make($validated['password']),
-            'email' => $validated['email']
+            'email' => $validated['email'],
+            'account' => $validated['account'],
+            'gender' => $validated['gender'],
+            'birthday' => $validated['birthday'],
+            'city' => $validated['city'],
         ]);
+
+        event(new Registered($user));
 
         return response()->json([
             'user' => $user,
@@ -79,8 +93,7 @@ class AuthenticationController extends Controller
     public function password(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'password' => 'required|string|min:6|required',
-            'password_confirmation' => 'required|string|min:6'
+            'password' => 'required|string|min:6|required|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -96,5 +109,10 @@ class AuthenticationController extends Controller
         return response()->json([
             'message' => 'Change password successful'
         ]);
+    }
+
+    public function email()
+    {
+        Mail::to('tom@gmail.com')->send(new TestMail());
     }
 }
