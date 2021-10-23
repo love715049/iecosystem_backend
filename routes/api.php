@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,3 +40,7 @@ Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
 
 Route::post('reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');
+
+//facebook
+Route::get('/facebook/auth', [SocialiteController::class, 'login']);
+Route::get('/facebook/authCallback', [SocialiteController::class, 'call_back']);
