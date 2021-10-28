@@ -53,3 +53,14 @@ Route::prefix('facebook')->group(function () {
     Route::get('auth', [SocialiteController::class, 'login']);
     Route::get('authCallback', [SocialiteController::class, 'call_back']);
 });
+
+//admin
+Route::middleware(['auth:sanctum'])->prefix('users')->group(function () {
+    Route::get('{user}/messages', [\App\Http\Controllers\Admin\MessageController::class, 'index']);
+    Route::post('{user}/messages', [\App\Http\Controllers\Admin\MessageController::class, 'create']);
+});
+Route::middleware(['auth:sanctum'])->prefix('orders')->group(function () {
+    Route::get('assign', [\App\Http\Controllers\Admin\OrderController::class, 'index']);
+    Route::get('{order}/messages', [\App\Http\Controllers\Admin\OrderController::class, 'messages']);
+    Route::post('{order}/assign', [\App\Http\Controllers\Admin\OrderController::class, 'assign']);
+});
