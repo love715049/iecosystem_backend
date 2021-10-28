@@ -36,6 +36,7 @@ class OrderController extends Controller
     public function assign(Request $request, Order $order)
     {
         $admin = $request->user();
+        $order->status = 1;
         $order->assign_id = $admin->id;
         $order->save();
 
