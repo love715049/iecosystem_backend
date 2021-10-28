@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user', [AuthenticationController::class, 'show']);
     Route::post('logout', [AuthenticationController::class, 'logout']);
     Route::post('user/reset-password', [AuthenticationController::class, 'password']);
+});
+
+Route::middleware(['auth:sanctum'])->prefix('messages')->group(function () {
+    Route::get('', [MessageController::class, 'index']);
+    Route::post('', [MessageController::class, 'create']);
+    Route::post('storage', [MessageController::class, 'create_storage']);
 });
 
 Route::get('verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
