@@ -61,6 +61,7 @@ Route::prefix('facebook')->group(function () {
 
 //admin
 Route::middleware(['auth:sanctum'])->prefix('users')->group(function () {
+    Route::get('', [\App\Http\Controllers\Admin\UserController::class, 'index']);
     Route::get('{user}/messages', [\App\Http\Controllers\Admin\MessageController::class, 'index']);
     Route::post('{user}/messages', [\App\Http\Controllers\Admin\MessageController::class, 'create']);
 });
