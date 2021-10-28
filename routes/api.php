@@ -21,13 +21,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('test/email', [AuthenticationController::class, 'email']);
 
-Route::post('/login', [AuthenticationController::class, 'login']);
-Route::post('/register', [AuthenticationController::class, 'create']);
+Route::post('login', [AuthenticationController::class, 'login']);
+Route::post('register', [AuthenticationController::class, 'create']);
+Route::post('logout', [AuthenticationController::class, 'logout'])->middleware(['auth:sanctum']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('user', [AuthenticationController::class, 'show']);
-    Route::post('logout', [AuthenticationController::class, 'logout']);
-    Route::post('user/reset-password', [AuthenticationController::class, 'password']);
+Route::middleware(['auth:sanctum'])->prefix('user')->group(function () {
+    Route::get('', [AuthenticationController::class, 'show']);
+    Route::post('reset-password', [AuthenticationController::class, 'password']);
 });
 
 Route::middleware(['auth:sanctum'])->prefix('messages')->group(function () {
@@ -49,5 +49,7 @@ Route::post('reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');
 
 //facebook
-Route::get('/facebook/auth', [SocialiteController::class, 'login']);
-Route::get('/facebook/authCallback', [SocialiteController::class, 'call_back']);
+Route::prefix('facebook')->group(function () {
+    Route::get('auth', [SocialiteController::class, 'login']);
+    Route::get('authCallback', [SocialiteController::class, 'call_back']);
+});
