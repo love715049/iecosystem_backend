@@ -113,6 +113,6 @@ class AuthenticationController extends Controller
 
     public function email()
     {
-        Mail::to('tom@gmail.com')->send(new TestMail());
+        Mail::to(env('TEST_EMAIL'))->send(new TestMail());
     }
 }
