@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::post('logout', [AuthenticationController::class, 'logout'])->middleware([
 Route::middleware(['auth:sanctum'])->prefix('user')->group(function () {
     Route::get('', [AuthenticationController::class, 'show']);
     Route::post('reset-password', [AuthenticationController::class, 'password']);
+});
+
+Route::middleware(['auth:sanctum'])->prefix('orders')->group(function () {
+    Route::post('{order}/close', [OrderController::class, 'close']);
 });
 
 Route::middleware(['auth:sanctum'])->prefix('messages')->group(function () {
