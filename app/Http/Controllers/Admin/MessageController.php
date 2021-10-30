@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AdminMessageCreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -43,6 +44,8 @@ class MessageController extends Controller
             'user_id' => $admin->id,
             'body' => $body
         ]);
+
+        event(new AdminMessageCreatedEvent($message->refresh()));
 
         return response()->json([
             'message' => 'Successful.',

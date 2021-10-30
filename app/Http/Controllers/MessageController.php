@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserMessageCreatedEvent;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -43,6 +44,8 @@ class MessageController extends Controller
             'user_id' => $user->id,
             'body' => $body
         ]);
+
+        event(new UserMessageCreatedEvent($message->refresh()));
 
         return response()->json([
             'message' => 'Successful.',
