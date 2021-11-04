@@ -6,6 +6,7 @@ use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -19,9 +20,9 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|unique:users,email|confirmed',
-            'account' => 'required|string|unique:users,account',
+            'account' => 'nullable|string|unique:users,account',
             'password' => 'required|string|min:6|confirmed',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'gender' => ['required', 'string', Rule::in(['male', 'female'])],
             'birthday' => ['required', 'date'],
             'city' => ['required', 'string'],
@@ -34,10 +35,10 @@ class AuthenticationController extends Controller
         $validated = $validator->validated();
 
         $user = User::create([
-            'name' => $validated['name'],
+            'name' => Arr::get($validated, 'name'),
             'password' => Hash::make($validated['password']),
             'email' => $validated['email'],
-            'account' => $validated['account'],
+            'account' => Arr::get($validated, 'account'),
             'gender' => $validated['gender'],
             'birthday' => $validated['birthday'],
             'city' => $validated['city'],
