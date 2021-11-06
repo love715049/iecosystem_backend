@@ -48,7 +48,8 @@ class AuthenticationController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $user->createToken('API Token')->plainTextToken
+            'token' => $user->createToken('API Token')->plainTextToken,
+            'success' => true,
         ]);
     }
 
