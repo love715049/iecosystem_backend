@@ -29,7 +29,7 @@ class AuthenticationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->getMessageBag());
+            return response()->json(Arr::add($validator->getMessageBag()->toArray(), 'success', 'false'));
         }
 
         $validated = $validator->validated();
