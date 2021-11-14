@@ -53,11 +53,9 @@ Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
 Route::post('reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');
 
-//facebook
-Route::prefix('facebook')->group(function () {
-    Route::get('auth', [SocialiteController::class, 'login']);
-    Route::get('authCallback', [SocialiteController::class, 'call_back']);
-});
+// provider login
+Route::get('{provider}/auth', [SocialiteController::class, 'login']);
+Route::get('{provider}/authCallback', [SocialiteController::class, 'call_back']);
 
 //admin
 Route::middleware(['auth:sanctum'])->prefix('users')->group(function () {

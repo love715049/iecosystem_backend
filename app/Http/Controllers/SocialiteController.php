@@ -5,22 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, $provider)
     {
-        $url = Socialite::with('facebook')->stateless()->redirect()->getTargetUrl();
+        if (!in_array($provider, ['facebook', 'google'])) {
+            return response()->json([
+                'message' => Str::ucfirst($provider) . ' auth fail.'
+            ]);
+        }
+
+        $url = Socialite::with($provider)->stateless()->redirect()->getTargetUrl();
         return redirect($url);
     }
 
-    public function call_back(Request $request)
+    public function call_back(Request $request, $provider)
     {
-        $userInfo = Socialite::driver('facebook')->stateless()->user();
+        if (!in_array($provider, ['facebook', 'google'])) {
+            return response()->json([
+                'message' => Str::ucfirst($provider) . ' auth fail.'
+            ]);
+        }
+
+        $userInfo = Socialite::driver($provider)->stateless()->user();
         if (!$userInfo) {
             return response()->json([
-                'message' => 'Facebook auth fail.'
+                'message' => Str::ucfirst($provider) . ' auth fail.'
             ]);
         }
         $user = $this->create_user($userInfo);
