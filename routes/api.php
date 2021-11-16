@@ -54,6 +54,8 @@ Route::post('reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');
 
 // provider login
+Route::get('line/auth', [SocialiteController::class, 'line_login']);
+Route::get('line/authCallback', [SocialiteController::class, 'line_call_back']);
 Route::get('{provider}/auth', [SocialiteController::class, 'login']);
 Route::get('{provider}/authCallback', [SocialiteController::class, 'call_back']);
 
