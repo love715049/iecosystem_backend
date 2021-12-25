@@ -23,7 +23,7 @@ class AuthenticationController extends Controller
             'account' => 'nullable|string|unique:users,account',
             'password' => 'required|string|min:6|confirmed',
             'name' => 'nullable|string|max:255',
-            'gender' => ['required', 'string', Rule::in(['male', 'female'])],
+            'gender' => ['required', 'string', Rule::in(['male', 'female', 'other'])],
             'birthday' => ['required', 'date'],
             'city' => ['required', 'string'],
         ]);
