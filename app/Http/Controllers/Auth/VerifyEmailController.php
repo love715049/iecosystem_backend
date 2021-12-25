@@ -38,7 +38,7 @@ class VerifyEmailController extends Controller
         }
 
         return response()->json([
-            'message' => 'Email verified'
+            'message' => __('passwords.email')
         ]);
     }
 }

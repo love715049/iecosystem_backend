@@ -56,7 +56,7 @@ class PasswordResetLinkController extends Controller
         );
 
         return response()->json([
-            'message' => 'Password reset link is send.'
+            'message' => __('passwords.sent')
         ]);
     }
 }

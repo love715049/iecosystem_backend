@@ -15,7 +15,7 @@ class OrderController extends Controller
         $order->save();
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $order->refresh()
         ]);
     }

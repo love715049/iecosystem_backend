@@ -16,7 +16,7 @@ class MessageController extends Controller
         $order = $user->orders()->processed()->first();
         if (!$order) {
             return response()->json([
-                'message' => 'No Content.'
+                'message' => __('normal.no_content')
             ], 204);
         }
         $messages = $order->messages()->paginate(
@@ -24,7 +24,7 @@ class MessageController extends Controller
         );
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $messages->items()
         ]);
     }
@@ -34,7 +34,7 @@ class MessageController extends Controller
         $body = $request->get('body');
         if (!$body) {
             return response()->json([
-                'message' => 'body is required.'
+                'message' => __('normal.required', ['field' => 'body'])
             ], 400);
         }
 
@@ -48,7 +48,7 @@ class MessageController extends Controller
         event(new UserMessageCreatedEvent($message->refresh()));
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $message->refresh()
         ]);
     }
@@ -58,7 +58,7 @@ class MessageController extends Controller
         $body = $request->get('body', []);
         if (!$body) {
             return response()->json([
-                'message' => 'body is required.'
+                'message' => __('normal.required', ['field' => 'body'])
             ], 400);
         }
 
@@ -72,7 +72,7 @@ class MessageController extends Controller
         }
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $messages
         ]);
     }

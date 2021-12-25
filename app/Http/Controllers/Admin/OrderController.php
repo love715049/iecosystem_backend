@@ -14,7 +14,7 @@ class OrderController extends Controller
         $assigned = $admin->assigned()->get();
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $assigned
         ]);
     }
@@ -28,7 +28,7 @@ class OrderController extends Controller
         );
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $messages->items()
         ]);
     }
@@ -41,7 +41,7 @@ class OrderController extends Controller
         $order->save();
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $order->refresh()
         ]);
     }

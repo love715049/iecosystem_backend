@@ -91,7 +91,7 @@ class NewPasswordController extends Controller
         );
 
         return response()->json([
-            'message' => 'Password is reset.'
+            'message' => __('passwords.reset')
         ]);
     }
 }

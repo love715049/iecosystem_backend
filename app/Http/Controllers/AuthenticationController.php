@@ -68,7 +68,7 @@ class AuthenticationController extends Controller
 
         if (!Auth::attempt($validated)) {
             return response()->json([
-                'message' => 'Credentials not match'
+                'message' => __('auth.failed')
             ], 401);
         }
 
@@ -83,7 +83,7 @@ class AuthenticationController extends Controller
         auth()->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'Tokens Revoked'
+            'message' => __('auth.tokens_revoked')
         ]);
     }
 
@@ -109,12 +109,48 @@ class AuthenticationController extends Controller
         ])->save();
 
         return response()->json([
-            'message' => 'Change password successful'
+            'message' => __('passwords.reset')
         ]);
     }
 
     public function email()
     {
         Mail::to(env('TEST_EMAIL'))->send(new TestMail());
+    }
+
+    public function profile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'nullable|string|min:6|confirmed',
+            'name' => 'nullable|string|max:255',
+            'gender' => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
+            'birthday' => ['nullable', 'date'],
+            'city' => ['nullable', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Arr::add($validator->getMessageBag()->toArray(), 'success', 'false'));
+        }
+
+        $validated = $validator->validated();
+
+        $profile = [];
+        foreach ($validated as $key => $store)
+        {
+            if (!$store) {
+                continue;
+            }
+            if ($key == 'password') {
+                $store = Hash::make($validated['password']);
+            }
+            $profile[$key] = $store;
+        }
+
+        auth()->user()->update($profile);
+
+        return response()->json([
+            'user' => auth()->user()->refresh(),
+            'success' => true,
+        ]);
     }
 }

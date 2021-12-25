@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
@@ -13,9 +12,10 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'tokens_revoked' => 'Tokens Revoked'
+    'failed'   => '帳號或密碼錯誤',
+    'password' => '密碼錯誤',
+    'throttle' => '嘗試登入太多次，請在 :seconds 秒後再試',
+    'tokens_revoked' => 'Token已撤銷',
+    'socialite'     => ':Provider 認證失敗'
 
 ];

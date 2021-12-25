@@ -16,7 +16,7 @@ class UserController extends Controller
         );
 
         return response()->json([
-            'message' => 'Successful.',
+            'message' => __('normal.successful'),
             'data' => $users->items()
         ]);
     }

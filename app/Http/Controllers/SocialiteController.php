@@ -15,7 +15,7 @@ class SocialiteController extends Controller
     {
         if (!in_array($provider, ['facebook', 'google'])) {
             return response()->json([
-                'message' => Str::ucfirst($provider) . ' auth fail.'
+                'message' => __('auth.socialite', ['provider' => Str::ucfirst($provider)])
             ]);
         }
 
@@ -27,14 +27,14 @@ class SocialiteController extends Controller
     {
         if (!in_array($provider, ['facebook', 'google'])) {
             return response()->json([
-                'message' => Str::ucfirst($provider) . ' auth fail.'
+                'message' => __('auth.socialite', ['provider' => Str::ucfirst($provider)])
             ]);
         }
 
         $userInfo = Socialite::driver($provider)->stateless()->user();
         if (!$userInfo) {
             return response()->json([
-                'message' => Str::ucfirst($provider) . ' auth fail.'
+                'message' => __('auth.socialite', ['provider' => Str::ucfirst($provider)])
             ]);
         }
         $user = $this->create_user($userInfo);
@@ -70,7 +70,7 @@ class SocialiteController extends Controller
 
         if (!$response->ok()) {
             return response()->json([
-                'message' => 'Line auth fail.'
+                'message' => __('auth.socialite', ['provider' => 'Line'])
             ]);
         }
 
@@ -82,7 +82,7 @@ class SocialiteController extends Controller
 
         if (!$userInfoResponse->ok()) {
             return response()->json([
-                'message' => 'Line auth fail.'
+                'message' => __('auth.socialite', ['provider' => 'Line'])
             ]);
         }
 
