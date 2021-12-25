@@ -24,11 +24,11 @@ Route::get('test/email', [AuthenticationController::class, 'email']);
 
 Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('register', [AuthenticationController::class, 'create']);
-Route::post('profile', [AuthenticationController::class, 'profile'])->middleware(['auth:sanctum']);
 Route::post('logout', [AuthenticationController::class, 'logout'])->middleware(['auth:sanctum']);
 
 Route::middleware(['auth:sanctum'])->prefix('user')->group(function () {
     Route::get('', [AuthenticationController::class, 'show']);
+    Route::post('profile', [AuthenticationController::class, 'profile']);
     Route::post('reset-password', [AuthenticationController::class, 'password']);
 });
 
