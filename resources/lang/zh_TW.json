@@ -3,5 +3,7 @@
     "You are receiving this email because we received a password reset request for your account.": "忘記密碼了嗎？",
     "Reset Password": "重設密碼",
     "This password reset link will expire in :count minutes.": "忘記密碼連結有 :count 分鐘的時效性",
-    "If you did not request a password reset, no further action is required.": "如果沒有忘記密碼，可以遺忘封信件"
+    "If you did not request a password reset, no further action is required.": "如果沒有忘記密碼，可以遺忘封信件",
+    "Click the button below to verify your email address.": "請點擊下面按鈕驗證您的 E-mail：",
+    "Verify Email Address": "驗證 E-mail"
 }
