@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
@@ -73,7 +74,7 @@ class NewPasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->getMessageBag());
+            return response()->json(Arr::add($validator->getMessageBag()->toArray(), 'success', 'false'));
         }
 
         $validated = $validator->validated();
@@ -91,7 +92,8 @@ class NewPasswordController extends Controller
         );
 
         return response()->json([
-            'message' => __('passwords.reset')
+            'message' => __('passwords.reset'),
+            'success' => true
         ]);
     }
 }
