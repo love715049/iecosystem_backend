@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -57,5 +58,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function assigned()
     {
         return $this->hasMany(Order::class, 'assign_id');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'https://paela-iecosystem.meida.tw/#/reset-password?token=' . $token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 }
