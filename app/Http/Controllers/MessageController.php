@@ -6,12 +6,28 @@ use App\Events\UserMessageCreatedEvent;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class MessageController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = $request->get('perPage', 10);
+        $validator = Validator::make($request->all(), [
+            'perPage' => ['integer'],
+            'sort' => ['string', Rule::in(['asc', 'desc'])],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Arr::add($validator->getMessageBag()->toArray(), 'success', 'false'));
+        }
+
+        $validated = $validator->validated();
+
+        $perPage = Arr::get($validated, 'perPage', 10);
+        $sort = Arr::get($validated, 'sort', 'asc');
+
         $user = $request->user();
         $order = $user->orders()->processed()->first();
         if (!$order) {
@@ -19,7 +35,7 @@ class MessageController extends Controller
                 'message' => __('normal.no_content')
             ], 204);
         }
-        $messages = $order->messages()->paginate(
+        $messages = $order->messages()->orderBy('created_at', $sort)->paginate(
             $perPage, $columns = ['id', 'user_id', 'body', 'created_at']
         );
 

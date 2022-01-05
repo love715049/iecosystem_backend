@@ -33,8 +33,8 @@ class Order extends Model
         return $this->belongsTo(User::class, 'assign_id');
     }
 
-    public function scopeProcessed()
+    public function scopeProcessed($query)
     {
-        return $this->where('status', 0);
+        return $query->where('status', '!=', 2);
     }
 }
