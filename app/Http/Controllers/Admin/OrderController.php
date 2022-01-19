@@ -51,8 +51,20 @@ class OrderController extends Controller
 
     public function assign(Request $request, Order $order)
     {
+        $validator = Validator::make($request->all(), [
+            'order_type_id' => ['required', 'integer'],
+            'user_id' => ['required', 'integer'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Arr::add($validator->getMessageBag()->toArray(), 'success', 'false'));
+        }
+
+        $validated = $validator->validated();
+
         $order->status = 1;
-        $order->assign_id = $request->get('user_id');
+        $order->order_type_id = Arr::get($validated, 'order_type_id');
+        $order->assign_id = Arr::get($validated, 'user_id');
         $order->save();
 
         return response()->json([
