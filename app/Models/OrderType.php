@@ -11,8 +11,8 @@ class OrderType extends Model
 
     protected $fillable = ['name'];
 
-    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Order::class);
     }
 }

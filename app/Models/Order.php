@@ -38,8 +38,8 @@ class Order extends Model
         return $query->where('status', '!=', 2);
     }
 
-    public function order_type(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function order_type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(OrderType::class);
+        return $this->belongsTo(OrderType::class);
     }
 }

@@ -32,10 +32,11 @@ Route::middleware(['auth:sanctum'])->prefix('user')->group(function () {
     Route::post('reset-password', [AuthenticationController::class, 'password']);
 });
 
-Route::prefix('orders')->group(function() {
+Route::prefix('orders')->group(function () {
     Route::get('types', [OrderController::class, 'types']);
 });
 Route::middleware(['auth:sanctum'])->prefix('orders')->group(function () {
+    Route::post('', [OrderController::class, 'index']);
     Route::post('{order}/close', [OrderController::class, 'close']);
 });
 
