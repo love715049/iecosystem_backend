@@ -24,7 +24,7 @@ class OrderController extends Controller
                 'number' => $item->number,
                 'created_at' => $item->created_at->format('Y/m/d'),
                 'order_type_name' => $item->order_type['name'],
-                'assign_id' => $item->owner['name'],
+                'assign' => $item->owner['name'],
                 'status' => Arr::get(self::ORDER_STATUS, $item->status, self::ORDER_STATUS[0]),
             ];
         });
