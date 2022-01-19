@@ -36,7 +36,7 @@ Route::prefix('orders')->group(function () {
     Route::get('types', [OrderController::class, 'types']);
 });
 Route::middleware(['auth:sanctum'])->prefix('orders')->group(function () {
-    Route::post('', [OrderController::class, 'index']);
+    Route::get('', [OrderController::class, 'index']);
     Route::post('{order}/close', [OrderController::class, 'close']);
 });
 
