@@ -11,6 +11,12 @@ use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
+    public const ORDER_STATUS = [
+        0 => '無',
+        1 => '進行中',
+        2 => '已結束'
+    ];
+
     public function index(Request $request)
     {
         $admin = $request->user();
@@ -19,6 +25,38 @@ class OrderController extends Controller
         return response()->json([
             'message' => __('normal.successful'),
             'data' => $assigned
+        ]);
+    }
+
+    public function list(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'perPage' => ['integer'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(Arr::add($validator->getMessageBag()->toArray(), 'success', 'false'));
+        }
+
+        $validated = $validator->validated();
+        $perPage = Arr::get($validated, 'perPage', 10);
+
+        $data = Order::with('order_type', 'owner', 'user')->orderByDesc('created_at')
+            ->paginate($perPage)->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'user' => Arr::get($item->user, 'name'),
+                    'number' => $item->number,
+                    'created_at' => $item->created_at->format('Y/m/d'),
+                    'order_type_name' => Arr::get($item->order_type, 'name'),
+                    'assign' => Arr::get($item->owner, 'name'),
+                    'status' => Arr::get(self::ORDER_STATUS, $item->status, self::ORDER_STATUS[0]),
+                ];
+            });
+
+        return response()->json([
+            'message' => __('normal.successful'),
+            'data' => $data
         ]);
     }
 

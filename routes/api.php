@@ -71,6 +71,7 @@ Route::middleware(['auth:sanctum'])->prefix('users')->group(function () {
     Route::post('{user}/messages', [\App\Http\Controllers\Admin\MessageController::class, 'create']);
 });
 Route::middleware(['auth:sanctum'])->prefix('orders')->group(function () {
+    Route::get('', [\App\Http\Controllers\Admin\OrderController::class, 'list']);
     Route::get('assign', [\App\Http\Controllers\Admin\OrderController::class, 'index']);
     Route::get('{order}/messages', [\App\Http\Controllers\Admin\OrderController::class, 'messages']);
     Route::post('{order}/assign', [\App\Http\Controllers\Admin\OrderController::class, 'assign']);
