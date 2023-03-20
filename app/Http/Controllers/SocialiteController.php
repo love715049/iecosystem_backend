@@ -88,7 +88,7 @@ class SocialiteController extends Controller
 
         $user = $this->create_user($userInfoResponse);
 
-        $url = ' http://localhost:8080/#/login?token=' . $user->createToken('API Token')->plainTextToken;
+        $url = 'http://localhost:8080/#/login?token=' . $user->createToken('API Token')->plainTextToken;
 
         return redirect($url);
 
